@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<widget id="NanoflowVisibility.widget.NanoflowVisibility" needsEntityContext="true" xmlns="http://www.mendix.com/widget/1.0/">
+    <name>NanoflowVisibility</name>
+    <description>The description of this widget.</description>
+
+    <icon />
+
+    <properties>
+      <property key="Nanoflow" type="nanoflow" required="true" defaultValue="">
+          <caption>Nanoflow</caption>
+          <category>Behavior</category>
+          <description>If the nanoflow returns false, the parent container will be hidden. Please note that users can easily change the styling to unhide it.</description>
+          <returnType type="Boolean" />
+      </property>
+    </properties>
+</widget>
