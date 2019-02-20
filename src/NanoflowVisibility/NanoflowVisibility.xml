@@ -6,7 +6,7 @@
     <icon />
 
     <properties>
-      <property key="Nanoflow" type="nanoflow" required="true" defaultValue="">
+      <property key="nanoflow" type="nanoflow" required="true" defaultValue="">
           <caption>Nanoflow</caption>
           <category>Behavior</category>
           <description>If the nanoflow returns false, the parent container will be hidden. Please note that users can easily change the styling to unhide it.</description>
