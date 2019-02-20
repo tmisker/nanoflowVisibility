@@ -25,6 +25,7 @@ define([
         // Modeler input
         nanoflow: null,
 
+
         // Internal variables.
         _handles: null,
         _contextObj: null,
@@ -41,20 +42,7 @@ define([
             logger.debug(this.id + ".update");
 
             this._contextObj = obj;
-            if (this.nanoflow && this.mxcontext) {
-              mx.data.callNanoflow({
-                nanoflow: this.nanoflow,
-                context: this.mxcontext,
-                origin: this.mxform,
-                callback: lang.hitch(this, function(callback, returnedString) {
-                  console.log("Nanoflow result " + returnedString);
-                }, callback),
-                error: lang.hitch(this, function(error) {
-                  console.log("Nanoflow error");
-                  console.log(error);
-                })
-              });
-            };
+            this._resetSubscriptions();
             this._updateRendering(callback);
         },
 
@@ -71,6 +59,26 @@ define([
 
             if (this._contextObj !== null) {
                 dojoStyle.set(this.domNode, "display", "block");
+                if (this.nanoflow && this.mxcontext) {
+                  mx.data.callNanoflow({
+                    nanoflow: this.nanoflow,
+                    context: this.mxcontext,
+                    origin: this.mxform,
+                    callback: lang.hitch(this, function(callback, visibility) {
+                      console.log("Nanoflow result " + visibility);
+                      if (visibility) {
+                        this.domNode.parentElement.style.display = "block";
+                      } else {
+                        var odv = this.domNode.parentElement.style.display;
+                        this.domNode.parentElement.style.display = "none";
+                      }
+                    }, callback),
+                    error: lang.hitch(this, function(error) {
+                      console.log("Nanoflow error");
+                      console.log(error);
+                    })
+                  });
+                };
             } else {
                 dojoStyle.set(this.domNode, "display", "none");
             }
@@ -78,26 +86,22 @@ define([
             this._executeCallback(callback, "_updateRendering");
         },
 
-        /*// Shorthand for running a microflow
-        _execMf: function (mf, guid, cb) {
-            logger.debug(this.id + "._execMf");
-            if (mf && guid) {
-                mx.ui.action(mf, {
-                    params: {
-                        applyto: "selection",
-                        guids: [guid]
-                    },
-                    callback: lang.hitch(this, function (objs) {
-                        if (cb && typeof cb === "function") {
-                            cb(objs);
-                        }
-                    }),
-                    error: function (error) {
-                        console.debug(error.description);
-                    }
-                }, this);
-            }
-        },*/
+        // Reset subscriptions.
+        _resetSubscriptions: function () {
+          logger.debug(this.id + "._resetSubscriptions");
+          // Release handles on previous object, if any.
+          this.unsubscribeAll();
+
+          // When a mendix object exists create subscribtions.
+          if (this._contextObj) {
+            this.subscribe({
+              guid: this._contextObj.getGuid(),
+              callback: lang.hitch(this, function (guid) {
+                this._updateRendering();
+              })
+            });
+          }
+        },
 
         // Shorthand for executing a callback, adds logging to your inspector
         _executeCallback: function (cb, from) {

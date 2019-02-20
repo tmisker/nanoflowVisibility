@@ -1,0 +1,8 @@
+﻿Buildfile: C:\Users\Tim\Documents\GitHub\nanoflowVisibility\test\deployment\build_core.xml
+
+clean:
+
+BUILD SUCCESSFUL
+Total time: 0 seconds
+
+

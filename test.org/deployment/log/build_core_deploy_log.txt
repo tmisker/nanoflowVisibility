@@ -1,0 +1,9 @@
+﻿Buildfile: C:\Users\Tim\Documents\GitHub\nanoflowVisibility\test\deployment\build_core.xml
+
+deploy:
+     [copy] Copying 44 files to C:\Users\Tim\Documents\GitHub\nanoflowVisibility\test\deployment
+
+BUILD SUCCESSFUL
+Total time: 0 seconds
+
+
